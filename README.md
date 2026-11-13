@@ -8,7 +8,9 @@ everything is explained word by word.
 
 # self study guide
 1. go through phase 0 to 8 if you want to cover all the programming concepts.
-2. use an AI tool to help out and clear what ever your problems are.
+2. phase 0 contains absolute basics.(for someone who wants to refresh their memory)
+3. phase 1 where OOP starts _(better to start from 0)_
+4. use an AI tool to help out and clear what ever your problems are.
    - use any AI for explanation(Claude or gemini prefered) for teaching and explanations( do not use chatgpt free tier for learning).
    - use propmts such as _"teach me **this** step by step. explain **this** word by word"_.
    - make sure to always combine prompts to strategize the output.
@@ -32,3 +34,5 @@ public double getArea() {
 _"what is this what does this do.
 can you explain with its purpose. And where it is used"
 **[Gemini example](https://share.gemini.google/YFljNYnuSivi)**_
+
+-Hirusha

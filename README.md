@@ -25,6 +25,7 @@ _"Teach me about java class constructors word by word, step by step. make sure t
 provide multiple examples and explain them very thouroughly as well. why and how this works and for what this is used. 
 explain and teach me like i have 0 knowledge about this. make sure to teach me prerequisites as well"_
 
+============================================================
 ```
 public double getArea() {
         return Math.PI * radius * radius;
@@ -34,5 +35,7 @@ public double getArea() {
 _"what is this what does this do.
 can you explain with its purpose. And where it is used"
 **[Gemini example](https://share.gemini.google/YFljNYnuSivi)**_
+
+=============================================================
 
 -Hirusha

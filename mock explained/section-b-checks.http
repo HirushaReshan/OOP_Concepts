@@ -1,0 +1,75 @@
+### Section B checks for the Dispatch mock. Run top to bottom against a FRESHLY STARTED app (port 8080).
+### In IntelliJ: click the green arrow next to each ### block.
+
+### B0: list seeded missions (expect 101, 102, 103)
+GET http://localhost:8080/missions
+
+### B1: Ground 101 energy -> {"energyUnits":39}
+GET http://localhost:8080/missions/101/energy
+
+### B2: Air 103 energy -> {"energyUnits":38}
+GET http://localhost:8080/missions/103/energy
+
+### B3: capacity 60 -> selected [103,102], skipped [101], used 56, remaining 4
+GET http://localhost:8080/missions/plan?capacity=60&urgentOnly=false
+
+### B3b: urgentOnly omitted must behave like false (default)
+GET http://localhost:8080/missions/plan?capacity=60
+
+### B4: urgent only -> selected [103], skipped [101]; 102 in neither list
+GET http://localhost:8080/missions/plan?capacity=60&urgentOnly=true
+
+### B1b: see priority 3 of mission 101 inside a PlanLine
+GET http://localhost:8080/missions/plan?capacity=200&urgentOnly=false
+
+### B5a: capacity 0 -> 400 BAD_REQUEST
+GET http://localhost:8080/missions/plan?capacity=0&urgentOnly=false
+
+### B5b: negative capacity -> 400 BAD_REQUEST
+GET http://localhost:8080/missions/plan?capacity=-5&urgentOnly=false
+
+### B5c: unknown mission -> 404 NOT_FOUND
+GET http://localhost:8080/missions/999/energy
+
+### B5d: duplicate ID (103 exists) -> 400 BAD_REQUEST
+POST http://localhost:8080/missions/air
+Content-Type: application/json
+
+{"id":103,"distanceKm":6,"loadKg":1,"windPenalty":2,"critical":false}
+
+### B5e: distanceKm 0 out of range -> 400 BAD_REQUEST
+POST http://localhost:8080/missions/air
+Content-Type: application/json
+
+{"id":500,"distanceKm":0,"loadKg":1,"windPenalty":2,"critical":false}
+
+### B5f: loadKg 10001 out of range -> 400 BAD_REQUEST
+POST http://localhost:8080/missions/air
+Content-Type: application/json
+
+{"id":501,"distanceKm":5,"loadKg":10001,"windPenalty":2,"critical":false}
+
+### B5g: id 0 out of range -> 400 BAD_REQUEST
+POST http://localhost:8080/missions/air
+Content-Type: application/json
+
+{"id":0,"distanceKm":5,"loadKg":1,"windPenalty":2,"critical":false}
+
+### B5h: loadKg 0 and windPenalty 0 are VALID lower bounds -> 201 (id 600). Delete this one mentally; it changes later plans.
+### (Run this only AFTER B6, or restart the app afterwards.)
+# POST http://localhost:8080/missions/air
+# Content-Type: application/json
+#
+# {"id":600,"distanceKm":1,"loadKg":0,"windPenalty":0,"critical":false}
+
+### B6a: create 104 -> 201 Created, energy 30 / priority 2 (fresh app!)
+POST http://localhost:8080/missions/air
+Content-Type: application/json
+
+{"id":104,"distanceKm":6,"loadKg":1,"windPenalty":2,"critical":false}
+
+### B6b: list includes 104
+GET http://localhost:8080/missions
+
+### B6c: capacity 125 -> selected [103,101,104,102], used 125, remaining 0
+GET http://localhost:8080/missions/plan?capacity=125&urgentOnly=false
